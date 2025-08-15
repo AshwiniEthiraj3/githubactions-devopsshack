@@ -85,7 +85,7 @@ jobs:
         cache: maven
 
    - uses: actions/checkout@v4
-   - with:
+     with:
       fetch-depth: 0
    - name: SonarCube scan
      uses: SonarSource/sonarqube-scan-action@v5.3.0
