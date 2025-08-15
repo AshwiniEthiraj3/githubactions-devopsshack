@@ -56,7 +56,7 @@ jobs:
 
 
   test:
-   runs_on: self-hosted
+   runs-on: self-hosted
    needs: security-check
 
    steps:
