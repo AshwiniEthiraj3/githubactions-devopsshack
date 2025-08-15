@@ -49,5 +49,27 @@ jobs:
     - name: gitleaks installation
       run: sudo apt install gitleaks -y
 
+ 
+    
     - name: gitleaks codescan
       run: gitleaks detect source . -r gitleaks-report.json -f json
+
+
+  test:
+   runs_on: self-hosted
+   needs: security-check
+
+   steps:
+   - uses: actions/checkout@v4
+   - name: Setup jdk 17
+     uses: action/setup-java@v4
+     with:
+        java-version: '17'
+        distribution: 'temuria'
+        cache: maven
+
+   - name: Unit Test cases
+     run: mvn test
+        
+
+  
