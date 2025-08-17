@@ -19,7 +19,7 @@ public class Account implements UserDetails {
     private BigDecimal balance;
 
     @OneToMany(mappedBy = "account")
-    @JsonManagedReference
+    
     private List<Transaction> transactions;
 
     @Transient
