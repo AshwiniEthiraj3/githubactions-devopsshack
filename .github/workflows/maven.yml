@@ -106,6 +106,7 @@ jobs:
       with:
        name: app.jar
        path: app #this will download jar to ./app folder
+     
 
   
     - name: Login to Docker Hub
@@ -120,8 +121,15 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v6
       with:
+        context: .
         push: true
         tags: user/app:latest
-
+        build-args: |
+          DB_URL=${{ secrets.DB_URL }}
+          DB_USERNAME=${{ secrets.DB_USERNAME }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+     
+        
+     
     
          
