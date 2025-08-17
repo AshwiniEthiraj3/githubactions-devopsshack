@@ -17,13 +17,20 @@ public class BankController {
 
     @Autowired
     private AccountService accountService;
+    private static final String DASHBOARD_VIEW = "dashboard";
+    private static final String ACCOUNT_ATTRIBUTE = "account";
+    private static final String ERROR_ATTRIBUTE="error";
+    private static final String TRANSACTION_ATTRIBUTE="transcations";
+    private static final String REDIRECT_DASHBOARD="redirect:/dashboard";
 
+
+    
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Account account = accountService.findAccountByUsername(username);
-        model.addAttribute("account", account);
-        return "dashboard";
+        model.addAttribute(ACCOUNT_ATTRIBUTE, account);
+        return DASHBOARD_VIEW;
     }
 
     @GetMapping("/register")
@@ -37,7 +44,7 @@ public class BankController {
             accountService.registerAccount(username, password);
             return "redirect:/login";
         } catch (RuntimeException e) {
-            model.addAttribute("error", e.getMessage());
+            model.addAttribute(ERROR_ATTRIBUTE, e.getMessage());
             return "register";
         }
     }
@@ -52,7 +59,7 @@ public class BankController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Account account = accountService.findAccountByUsername(username);
         accountService.deposit(account, amount);
-        return "redirect:/dashboard";
+        return REDIRECT_DASHBOARD;
     }
 
     @PostMapping("/withdraw")
@@ -63,19 +70,19 @@ public class BankController {
         try {
             accountService.withdraw(account, amount);
         } catch (RuntimeException e) {
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("account", account);
-            return "dashboard";
+            model.addAttribute(ERROR_ATTRIBUTE, e.getMessage());
+            model.addAttribute(ACCOUNT_ATTRIBUTE, account);
+            return DASHBOARD_VIEW;
         }
 
-        return "redirect:/dashboard";
+        return REDIRECT_DASHBOARD;
     }
 
     @GetMapping("/transactions")
     public String transactionHistory(Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Account account = accountService.findAccountByUsername(username);
-        model.addAttribute("transactions", accountService.getTransactionHistory(account));
+        model.addAttribute(TRANSACTION_ATTRIBUTE, accountService.getTransactionHistory(account));
         return "transactions";
     }
 
@@ -87,12 +94,12 @@ public class BankController {
         try {
             accountService.transferAmount(fromAccount, toUsername, amount);
         } catch (RuntimeException e) {
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("account", fromAccount);
-            return "dashboard";
+            model.addAttribute(ERROR_ATTRIBUTE, e.getMessage());
+            model.addAttribute(ACCOUNT_ATTRIBUTE, fromAccount);
+            return DASHBOARD_VIEW;
         }
 
-        return "redirect:/dashboard";
+        return REDIRECT_DASHBOARD;
     }
 
 }
