@@ -125,10 +125,7 @@ jobs:
         push: true
         tags: ashwiniethiraj/springboot-githubactions
 
-        build-args: |
-          DB_URL=${{ secrets.SPRING_DATASOURCE_URL }}
-          DB_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
-          DB_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+     
      
         
      
